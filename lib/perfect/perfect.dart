@@ -38,7 +38,11 @@ class _PerfectState extends State<Perfect> {
         future: videoFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container();
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
+            );
           } else {
             print(controller.value.isPlaying);
             return Stack(
