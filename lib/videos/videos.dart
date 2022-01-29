@@ -24,13 +24,14 @@ class _VideosState extends State<Videos> {
       body: Scrollbar(
         isAlwaysShown: true,
         child: ListView(
+          padding: EdgeInsets.symmetric(
+            horizontal: 50,
+            vertical: 30,
+          ),
           shrinkWrap: true,
           children: [
             SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              height: 700,
+              height: 600,
               child: HtmlElementView(
                 viewType: viewID,
               ),
@@ -39,13 +40,10 @@ class _VideosState extends State<Videos> {
               height: 30,
             ),
             SizedBox(
-              height: 750,
+              height: 600,
               child: HtmlElementView(
                 viewType: viewID1,
               ),
-            ),
-            SizedBox(
-              height: 30,
             ),
           ],
         ),
