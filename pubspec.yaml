@@ -42,6 +42,7 @@ dependencies:
   flutter_svg: ^1.0.3
   universal_html: ^2.0.8
   video_player: ^2.2.16
+  just_audio: ^0.9.18
 
 dev_dependencies:
   flutter_test:
@@ -80,10 +81,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Courier
+      fonts:
+        - asset: fonts/Courier-New.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
