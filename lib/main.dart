@@ -1,10 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pharaoh/clothes/clothes.dart';
 import 'package:pharaoh/contacts/contacts.dart';
+import 'package:pharaoh/videos/videos.dart';
+import 'dart:html' as html;
+import 'dart:js' as js;
+import 'dart:ui' as ui;
 
 void main() async {
   runApp(const MyApp());
 }
+
+void setUp() {}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -12,58 +20,121 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Contacts(),
+      home: Home(),
     );
   }
 }
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
+final String viewID = "your-view-id";
+final String viewID1 = "your-view-id1";
+
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int currentPage = 1;
+
+  final pages = [
+    Clothes(),
+    Videos(),
+    Contacts(),
+  ];
+
+  void changePage(int newPage) {
+    setState(() {
+      currentPage = newPage;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+        viewID,
+        (int id) => html.IFrameElement()
+          ..height = '500'
+          ..src = 'https://www.youtube.com/embed/l7v8DAbIOx0'
+          ..style.border = 'none');
+
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+        viewID1,
+        (int id) => html.IFrameElement()
+          ..height = '500'
+          ..src = 'https://www.youtube.com/embed/DTzDB5Sr7FI'
+          ..style.border = 'none');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: <Widget>[
-          NavigationRail(
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            labelType: NavigationRailLabelType.selected,
-            destinations: const <NavigationRailDestination>[
-              NavigationRailDestination(
-                icon: Icon(Icons.favorite_border),
-                selectedIcon: Icon(Icons.favorite),
-                label: Text('First'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.bookmark_border),
-                selectedIcon: Icon(Icons.book),
-                label: Text('Second'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.star_border),
-                selectedIcon: Icon(Icons.star),
-                label: Text('Third'),
-              ),
-            ],
-          ),
-          const VerticalDivider(thickness: 1, width: 1),
-          // This is the main content.
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          NavigationAppBar(changePage),
           Expanded(
-            child: Center(
-              child: Text('selectedIndex: $_selectedIndex'),
-            ),
-          )
+            child: pages[currentPage],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NavigationAppBar extends StatefulWidget {
+  final Function(int) changePage;
+  const NavigationAppBar(this.changePage);
+
+  @override
+  _NavigationAppBarState createState() => _NavigationAppBarState();
+}
+
+class _NavigationAppBarState extends State<NavigationAppBar> {
+  late final pageTitles;
+
+  @override
+  void initState() {
+    super.initState();
+    final style = TextStyle(
+      color: Colors.grey,
+      fontSize: 20,
+    );
+    pageTitles = [
+      HoveredText(
+        "Мерч",
+        () => widget.changePage(0),
+        style: style,
+      ),
+      HoveredText(
+        "Видео",
+        () => widget.changePage(1),
+        style: style,
+      ),
+      HoveredText(
+        "Контакты",
+        () => widget.changePage(2),
+        style: style,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black,
+      height: 80,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset('assets/logo.svg'),
+          ...pageTitles,
         ],
       ),
     );

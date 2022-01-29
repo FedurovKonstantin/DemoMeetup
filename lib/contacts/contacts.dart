@@ -9,6 +9,7 @@ class Contacts extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.9),
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Contact(
@@ -94,14 +95,24 @@ class _HoveredTextState extends State<HoveredText> {
           isHovered = false;
         }),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              widget.content,
-              style: isHovered
-                  ? widget.style?.copyWith(
-                      decoration: TextDecoration.underline,
-                    )
-                  : widget.style,
+            Container(
+              padding: const EdgeInsets.only(bottom: 1),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: isHovered ? Colors.white : Colors.transparent,
+                    width: 2,
+                  ),
+                ),
+              ),
+              child: Text(
+                widget.content,
+                style: isHovered
+                    ? widget.style?.copyWith(color: Colors.white)
+                    : widget.style,
+              ),
             ),
           ],
         ),
