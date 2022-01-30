@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart';
 import 'dart:js' as js;
 import 'dart:ui' as ui;
+import 'package:universal_html/html.dart' as html;
 
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 

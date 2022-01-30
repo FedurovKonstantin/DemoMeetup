@@ -417,31 +417,47 @@ class VerticalDetailsPage extends StatelessWidget {
   }
 }
 
-class BuyButton extends StatelessWidget {
+class BuyButton extends StatefulWidget {
   const BuyButton({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<BuyButton> createState() => _BuyButtonState();
+}
+
+class _BuyButtonState extends State<BuyButton> {
+  bool isHovered = false;
+  @override
   Widget build(BuildContext context) {
     return IntrinsicWidth(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        height: 60,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.white,
-            width: 3,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (event) => setState(() {
+          isHovered = true;
+        }),
+        onExit: (event) => setState(() {
+          isHovered = false;
+        }),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 25,
           ),
-        ),
-        child: Center(
-          child: Text(
-            "КУПИТЬ",
-            style: TextStyle(
+          height: 55,
+          decoration: BoxDecoration(
+            border: Border.all(
               color: Colors.white,
-              fontSize: 25,
+              width: 3,
+            ),
+            color: isHovered ? Colors.white : null,
+          ),
+          child: Center(
+            child: Text(
+              "КУПИТЬ",
+              style: TextStyle(
+                color: isHovered ? Colors.black.withOpacity(0.9) : Colors.white,
+                fontSize: 20,
+              ),
             ),
           ),
         ),
@@ -463,7 +479,7 @@ class _SizeChoiserState extends State<SizeChoiser> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 55,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.white,
@@ -480,8 +496,11 @@ class _SizeChoiserState extends State<SizeChoiser> {
             "Размер:",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 25,
+              fontSize: 20,
             ),
+          ),
+          SizedBox(
+            width: 5,
           ),
           ...Size.values
               .map(

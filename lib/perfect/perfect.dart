@@ -23,7 +23,10 @@ class _PerfectState extends State<Perfect> {
   void initState() {
     super.initState();
     controller.play();
-    if (!player.playing) player.play();
+    if (!player.playing) {
+      player.play();
+      player.setVolume(0.1);
+    }
   }
 
   @override

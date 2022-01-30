@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
 
   final pages = [
     Perfect(),
-    DressDetails(clothes.first),
+    Clothes(),
     Videos(),
     Contacts(),
   ];
@@ -65,6 +65,7 @@ class _HomeState extends State<Home> {
         viewID,
         (int id) => html.IFrameElement()
           ..src = 'https://www.youtube.com/embed/l7v8DAbIOx0'
+          ..id = viewID
           ..style.border = 'none');
 
     // ignore: undefined_prefixed_name
