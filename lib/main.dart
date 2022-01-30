@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
 
   final pages = [
     Perfect(),
-    Clothes(),
+    DressDetails(clothes.first),
     Videos(),
     Contacts(),
   ];

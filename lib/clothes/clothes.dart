@@ -26,36 +26,42 @@ class ClothesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.9),
-      body: BlocBuilder<ClothesCubit, ClothesState>(
-        builder: (context, state) {
-          if (state is ClothesInProgress) {
-            return const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-              ),
-            );
-          } else if (state is ClothesFailure) {
-            return Center(
-              child: Text(state.error),
-            );
-          }
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 90,
-                vertical: 55,
-              ),
-              child: Wrap(
-                spacing: 70,
-                runSpacing: 60,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: (state as ClothesSuccess)
-                    .clothes
-                    .map(
-                      (e) => DressView(e),
-                    )
-                    .toList(),
-              ),
+      body: Navigator(
+        onGenerateRoute: (_) {
+          return MaterialPageRoute(
+            builder: (_) => BlocBuilder<ClothesCubit, ClothesState>(
+              builder: (context, state) {
+                if (state is ClothesInProgress) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                    ),
+                  );
+                } else if (state is ClothesFailure) {
+                  return Center(
+                    child: Text(state.error),
+                  );
+                }
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 70,
+                      vertical: 55,
+                    ),
+                    child: Wrap(
+                      spacing: 70,
+                      runSpacing: 60,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: (state as ClothesSuccess)
+                          .clothes
+                          .map(
+                            (e) => DressView(e),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
@@ -78,83 +84,188 @@ class _DressViewState extends State<DressView> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (event) {
-        setState(() {
-          isHovered = true;
-        });
-      },
-      onExit: (event) {
-        setState(() {
-          isHovered = false;
-        });
-      },
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/${widget.dress.photoUrl}'),
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => DressDetails(widget.dress),
+        ),
+      ),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (event) {
+          setState(() {
+            isHovered = true;
+          });
+        },
+        onExit: (event) {
+          setState(() {
+            isHovered = false;
+          });
+        },
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/${widget.dress.photoUrl}',
+                  ),
+                ),
               ),
-            ),
-            width: 360,
-            height: 360,
-          ),
-          AnimatedOpacity(
-            opacity: isHovered ? 1 : 0,
-            duration: const Duration(
-              milliseconds: 300,
-            ),
-            child: Container(
               width: 360,
               height: 360,
-              padding: const EdgeInsets.all(10),
-              color: isHovered ? Colors.black26 : Colors.transparent,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.dress.name,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w100,
+            ),
+            AnimatedOpacity(
+              opacity: isHovered ? 1 : 0,
+              duration: const Duration(
+                milliseconds: 300,
+              ),
+              child: Container(
+                width: 360,
+                height: 360,
+                padding: const EdgeInsets.all(10),
+                color: isHovered ? Colors.black26 : Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.dress.name,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w100,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Text(
-                    "${widget.dress.price.toString()} P.",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w100,
+                    const SizedBox(
+                      height: 25,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const Text(
-                    "Купить",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w100,
+                    Text(
+                      "${widget.dress.price.toString()} P.",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w100,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    const Text(
+                      "Купить",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DressDetails extends StatelessWidget {
+  final Dress dress;
+  const DressDetails(this.dress);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.9),
+      body: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                image: DecorationImage(
+                  image: AssetImage('assets/${dress.photoUrl}'),
+                ),
               ),
             ),
           ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Text(
+                      dress.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 45,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      "${dress.price} P.",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 35,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    SizeChoiser(),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      dress.description,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      dress.description,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
+  }
+}
+
+class SizeChoiser extends StatelessWidget {
+  const SizeChoiser({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
@@ -193,9 +304,11 @@ final clothes = [
     photoUrl: "1.jpg",
     price: 5300,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
   Dress(
@@ -204,9 +317,11 @@ final clothes = [
     photoUrl: "3.png",
     price: 2300,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
   Dress(
@@ -215,9 +330,11 @@ final clothes = [
     photoUrl: "2.png",
     price: 5000,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
   Dress(
@@ -226,9 +343,11 @@ final clothes = [
     photoUrl: "4.png",
     price: 2000,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
   Dress(
@@ -237,9 +356,11 @@ final clothes = [
     photoUrl: "5.png",
     price: 5000,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
   Dress(
@@ -248,9 +369,11 @@ final clothes = [
     photoUrl: "6.jpg",
     price: 300,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
   Dress(
@@ -259,9 +382,11 @@ final clothes = [
     photoUrl: "7.png",
     price: 2000,
     description: '''
-    Материал: 50% хлопок, 50% полиэстер
-    Страна-производитель: Россия
-    Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
+Материал: 50% хлопок, 50% полиэстер
+
+Страна-производитель: Россия
+
+Вы можете произвести оплату банковскими картами платежных систем: Visa, Mastercard
     ''',
   ),
 ];
