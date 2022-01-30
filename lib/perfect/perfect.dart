@@ -12,8 +12,9 @@ class Perfect extends StatefulWidget {
 
 final player = AudioPlayer()..setAsset('assets/song.mp3');
 
-final VideoPlayerController controller =
-    VideoPlayerController.asset('assets/dark.mp4')..setLooping(true);
+final VideoPlayerController controller = VideoPlayerController.network(
+    'https://pharaoh.ru/local/templates/main/video/dark.mp4')
+  ..setLooping(true);
 
 final Future videoFuture = controller.initialize();
 

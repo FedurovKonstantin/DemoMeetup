@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Courier'),
+      theme: ThemeData(
+        fontFamily: 'Courier',
+      ),
       home: Home(),
     );
   }
