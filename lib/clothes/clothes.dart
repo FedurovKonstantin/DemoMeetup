@@ -42,12 +42,12 @@ class ClothesView extends StatelessWidget {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 100,
-                vertical: 45,
+                horizontal: 90,
+                vertical: 55,
               ),
               child: Wrap(
-                spacing: 60,
-                runSpacing: 45,
+                spacing: 70,
+                runSpacing: 60,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: (state as ClothesSuccess)
                     .clothes
@@ -74,16 +74,86 @@ class DressView extends StatefulWidget {
 }
 
 class _DressViewState extends State<DressView> {
+  bool isHovered = false;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/${widget.dress.photoUrl}'),
-        ),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (event) {
+        setState(() {
+          isHovered = true;
+        });
+      },
+      onExit: (event) {
+        setState(() {
+          isHovered = false;
+        });
+      },
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/${widget.dress.photoUrl}'),
+              ),
+            ),
+            width: 360,
+            height: 360,
+          ),
+          AnimatedOpacity(
+            opacity: isHovered ? 1 : 0,
+            duration: const Duration(
+              milliseconds: 300,
+            ),
+            child: Container(
+              width: 360,
+              height: 360,
+              padding: const EdgeInsets.all(10),
+              color: isHovered ? Colors.black26 : Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.dress.name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w100,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    "${widget.dress.price.toString()} P.",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w100,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  const Text(
+                    "Купить",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w100,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-      width: 330,
-      height: 330,
     );
   }
 }
@@ -119,7 +189,7 @@ class ClothesFailure extends ClothesState {
 final clothes = [
   Dress(
     size: Size.l,
-    name: "SEX GANG HOODIE BLACK",
+    name: "Death Got Her Eyes : The Art Prospective by Saharnaya & PHARAOH",
     photoUrl: "1.jpg",
     price: 5300,
     description: '''
@@ -130,9 +200,9 @@ final clothes = [
   ),
   Dress(
     size: Size.l,
-    name: "DEATH GOT HER EYES : THE ART PROSPECTIVE BY SAHARNAYA & PHARAOH",
-    photoUrl: "2.png",
-    price: 5000,
+    name: "Sex Gang Hoodie Black",
+    photoUrl: "3.png",
+    price: 2300,
     description: '''
     Материал: 50% хлопок, 50% полиэстер
     Страна-производитель: Россия
@@ -142,8 +212,8 @@ final clothes = [
   Dress(
     size: Size.l,
     name: "Balaclava Pegasus Reflective Black",
-    photoUrl: "3.png",
-    price: 2300,
+    photoUrl: "2.png",
+    price: 5000,
     description: '''
     Материал: 50% хлопок, 50% полиэстер
     Страна-производитель: Россия
@@ -174,7 +244,7 @@ final clothes = [
   ),
   Dress(
     size: Size.l,
-    name: "TEMPORARY TATTOO SET",
+    name: "Temporary Tattoo Set",
     photoUrl: "6.jpg",
     price: 300,
     description: '''
@@ -185,8 +255,8 @@ final clothes = [
   ),
   Dress(
     size: Size.l,
-    name: "Welcome To My Nightmare Tee Black",
-    photoUrl: "4.png",
+    name: "2LP MILLION DOLLAR DEPRESSION",
+    photoUrl: "7.png",
     price: 2000,
     description: '''
     Материал: 50% хлопок, 50% полиэстер
