@@ -26,37 +26,39 @@ class ClothesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.9),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 100,
-          vertical: 30,
-        ),
-        child: BlocBuilder<ClothesCubit, ClothesState>(
-          builder: (context, state) {
-            if (state is ClothesInProgress) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                ),
-              );
-            } else if (state is ClothesFailure) {
-              return Center(
-                child: Text(state.error),
-              );
-            }
-            return Wrap(
-              spacing: 60,
-              runSpacing: 35,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: (state as ClothesSuccess)
-                  .clothes
-                  .map(
-                    (e) => DressView(e),
-                  )
-                  .toList(),
+      body: BlocBuilder<ClothesCubit, ClothesState>(
+        builder: (context, state) {
+          if (state is ClothesInProgress) {
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
             );
-          },
-        ),
+          } else if (state is ClothesFailure) {
+            return Center(
+              child: Text(state.error),
+            );
+          }
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 100,
+                vertical: 45,
+              ),
+              child: Wrap(
+                spacing: 60,
+                runSpacing: 45,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: (state as ClothesSuccess)
+                    .clothes
+                    .map(
+                      (e) => DressView(e),
+                    )
+                    .toList(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
