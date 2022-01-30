@@ -88,6 +88,7 @@ class _HoveredTextState extends State<HoveredText> {
     return GestureDetector(
       onTap: () => widget.action(),
       child: MouseRegion(
+        cursor: SystemMouseCursors.click,
         onEnter: (event) => setState(() {
           isHovered = true;
         }),

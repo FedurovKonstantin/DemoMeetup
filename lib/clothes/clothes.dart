@@ -243,7 +243,7 @@ class DressDetails extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 25,
                       ),
                     ),
                     SizedBox(
@@ -260,12 +260,112 @@ class DressDetails extends StatelessWidget {
   }
 }
 
-class SizeChoiser extends StatelessWidget {
+class SizeChoiser extends StatefulWidget {
   const SizeChoiser({Key? key}) : super(key: key);
 
   @override
+  State<SizeChoiser> createState() => _SizeChoiserState();
+}
+
+class _SizeChoiserState extends State<SizeChoiser> {
+  int currentSize = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.white,
+          width: 3,
+        ),
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            "Размер:",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+            ),
+          ),
+          ...Size.values
+              .map(
+                (e) => GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () => setState(() {
+                    currentSize = e.index;
+                  }),
+                  child: SizeItem(
+                    e,
+                    e.index == currentSize,
+                    ValueKey(e),
+                  ),
+                ),
+              )
+              .toList(),
+        ],
+      ),
+    );
+  }
+}
+
+class SizeItem extends StatefulWidget {
+  final Size size;
+  bool isPressed;
+
+  SizeItem(
+    this.size,
+    this.isPressed,
+    Key key,
+  ) : super(key: key);
+
+  @override
+  State<SizeItem> createState() => _SizeItemState();
+}
+
+class _SizeItemState extends State<SizeItem> {
+  late bool isHovered;
+
+  @override
+  void initState() {
+    isHovered = widget.isPressed;
+  }
+
+  @override
+  void didUpdateWidget(covariant SizeItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    isHovered = widget.isPressed;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (event) => setState(() {
+        isHovered = true;
+      }),
+      onExit: (event) => setState(() {
+        isHovered = widget.isPressed;
+      }),
+      child: Container(
+        height: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        color: isHovered ? Colors.white : null,
+        child: Center(
+          child: Text(
+            widget.size.toString().split('.').last.toUpperCase(),
+            style: TextStyle(
+              color: isHovered ? Colors.black.withOpacity(0.9) : Colors.white,
+              fontSize: 25,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
