@@ -181,10 +181,146 @@ class DressDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.9),
-      body: Row(
-        children: [
-          Expanded(
-            child: Container(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          print(constraints.maxWidth);
+          if (constraints.maxWidth < 920) {
+            return VerticalDetailsPage(dress: dress);
+          }
+          return HorizontalDetailsPage(dress: dress);
+        },
+      ),
+    );
+  }
+}
+
+class HorizontalDetailsPage extends StatelessWidget {
+  const HorizontalDetailsPage({
+    Key? key,
+    required this.dress,
+  }) : super(key: key);
+
+  final Dress dress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              image: DecorationImage(
+                image: AssetImage('assets/${dress.photoUrl}'),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Text(
+                    dress.name.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 45,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "${dress.price} P.",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 35,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 560) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizeChoiser(),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            BuyButton(),
+                          ],
+                        );
+                      }
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizeChoiser(),
+                          BuyButton(),
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    dress.description,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                    ),
+                  ),
+                  Text(
+                    dress.description,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class VerticalDetailsPage extends StatelessWidget {
+  const VerticalDetailsPage({
+    Key? key,
+    required this.dress,
+  }) : super(key: key);
+
+  final Dress dress;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: constraints.maxHeight / 2,
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                 image: DecorationImage(
@@ -192,9 +328,7 @@ class DressDetails extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
+            Container(
               padding: EdgeInsets.only(
                 left: 20,
                 right: 20,
@@ -207,7 +341,7 @@ class DressDetails extends StatelessWidget {
                       height: 100,
                     ),
                     Text(
-                      dress.name,
+                      dress.name.toUpperCase(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 45,
@@ -226,16 +360,39 @@ class DressDetails extends StatelessWidget {
                     SizedBox(
                       height: 30,
                     ),
-                    SizeChoiser(),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        if (constraints.maxWidth < 560) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizeChoiser(),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              BuyButton(),
+                            ],
+                          );
+                        }
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizeChoiser(),
+                            BuyButton(),
+                          ],
+                        );
+                      },
+                    ),
                     SizedBox(
-                      height: 30,
+                      height: 25,
                     ),
                     Text(
                       dress.description,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 22,
                       ),
                     ),
                     Text(
@@ -252,9 +409,42 @@ class DressDetails extends StatelessWidget {
                   ],
                 ),
               ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BuyButton extends StatelessWidget {
+  const BuyButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        height: 60,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white,
+            width: 3,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            "КУПИТЬ",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -281,6 +471,7 @@ class _SizeChoiserState extends State<SizeChoiser> {
         ),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             width: 10,
