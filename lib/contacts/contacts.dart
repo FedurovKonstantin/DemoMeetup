@@ -6,23 +6,49 @@ class Contacts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("contacts");
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.9),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Contact(
-            'Сотрудничество',
-            "ev@pharaoh.ru",
-            () => launch('mailto:ev@pharaoh.ru?subject=Хорошие треки, друг!!'),
-          ),
-          Contact(
-            'Соцсети',
-            "Инстаграм",
-            () => launch("https://www.instagram.com/coldsiemens/"),
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 200),
+        child: LayoutBuilder(
+          builder: (context, constraints) => constraints.maxWidth < 550
+              ? Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Contact(
+                        'Сотрудничество',
+                        "ev@pharaoh.ru",
+                        () =>
+                            launch('mailto:ev@pharaoh.ru?subject=Хорошие треки, друг!!'),
+                      ),
+                      Contact(
+                        'Соцсети',
+                        "Инстаграм",
+                        () => launch("https://www.instagram.com/coldsiemens/"),
+                      ),
+                    ],
+                  ),
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Contact(
+                      'Сотрудничество',
+                      "ev@pharaoh.ru",
+                      () => launch('mailto:ev@pharaoh.ru?subject=Хорошие треки, друг!!'),
+                    ),
+                    Contact(
+                      'Соцсети',
+                      "Инстаграм",
+                      () => launch("https://www.instagram.com/coldsiemens/"),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -41,32 +67,29 @@ class Contact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 200),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 18,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 18,
           ),
-          SizedBox(
-            height: 15,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        HoveredText(
+          content,
+          action,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 19,
           ),
-          HoveredText(
-            content,
-            action,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 19,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

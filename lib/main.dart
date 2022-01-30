@@ -121,7 +121,9 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
       ),
       HoveredText(
         "Мерч",
-        () => widget.changePage(1),
+        () async {
+          widget.changePage(1);
+        },
         style: style,
       ),
       HoveredText(

@@ -443,7 +443,7 @@ class _BuyButtonState extends State<BuyButton> {
           padding: EdgeInsets.symmetric(
             horizontal: 25,
           ),
-          height: 55,
+          height: 45,
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.white,
@@ -456,7 +456,7 @@ class _BuyButtonState extends State<BuyButton> {
               "КУПИТЬ",
               style: TextStyle(
                 color: isHovered ? Colors.black.withOpacity(0.9) : Colors.white,
-                fontSize: 20,
+                fontSize: 17,
               ),
             ),
           ),
@@ -479,7 +479,7 @@ class _SizeChoiserState extends State<SizeChoiser> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
+      height: 45,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.white,
@@ -496,7 +496,7 @@ class _SizeChoiserState extends State<SizeChoiser> {
             "Размер:",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 17,
             ),
           ),
           SizedBox(
@@ -563,14 +563,14 @@ class _SizeItemState extends State<SizeItem> {
       }),
       child: Container(
         height: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         color: isHovered ? Colors.white : null,
         child: Center(
           child: Text(
             widget.size.toString().split('.').last.toUpperCase(),
             style: TextStyle(
               color: isHovered ? Colors.black.withOpacity(0.9) : Colors.white,
-              fontSize: 25,
+              fontSize: 22,
             ),
           ),
         ),
