@@ -73,7 +73,7 @@ class _PerfectState extends State<Perfect> {
                       ),
                       SvgPicture.asset(
                         'assets/logo.svg',
-                        height: 210,
+                        height: 210
                       ),
                     ],
                   ),
