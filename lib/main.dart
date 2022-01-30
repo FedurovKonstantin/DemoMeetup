@@ -111,13 +111,16 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
       fontSize: 20,
     );
     pageTitles = [
-      GestureDetector(
-        onTap: () {
-          widget.changePage(0);
-          widget.changePage(2);
-          widget.changePage(0);
-        },
-        child: SvgPicture.asset('assets/logo.svg'),
+      MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            widget.changePage(0);
+            widget.changePage(2);
+            widget.changePage(0);
+          },
+          child: SvgPicture.asset('assets/logo.svg'),
+        ),
       ),
       HoveredText(
         "Мерч",

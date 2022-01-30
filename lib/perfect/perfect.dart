@@ -25,7 +25,7 @@ class _PerfectState extends State<Perfect> {
     controller.play();
     if (!player.playing) {
       player.play();
-      player.setVolume(0.1);
+      player.setVolume(0.05);
     }
   }
 
